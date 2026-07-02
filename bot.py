@@ -164,7 +164,7 @@ async def p8(message: types.Message, state: FSMContext):
         reply_markup=phone_keyboard
     )
 
-@dp.message(Survey.phone)
+@dp.message(Survey.phone, F.text)
 async def process_phone(message: types.Message, state: FSMContext):
     data = await state.get_data()
     report = (f"🔔 НОВЫЙ ЛИД!\n\n📞 Телефон: {message.text}\n\n"
