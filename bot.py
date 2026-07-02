@@ -103,19 +103,45 @@ async def ask_question(message: types.Message, state: FSMContext, q_key: str):
     await message.answer(q["text"], reply_markup=make_keyboard(q["options"]))
 
 @dp.message(Survey.q1)
-async def p1(m: types.Message, s: FSMContext): await s.update_data(q1=m.text); await ask_question(m, s, "q2")
+async def p1(message: types.Message, state: FSMContext):
+    await state.update_data(q1=message.text)
+    await ask_question(message, state, "q2")
+
+
 @dp.message(Survey.q2)
-async def p2(m: types.Message, s: FSMContext): await s.update_data(q2=m.text); await ask_question(m, s, "q3")
+async def p2(message: types.Message, state: FSMContext):
+    await state.update_data(q2=message.text)
+    await ask_question(message, state, "q3")
+
+
 @dp.message(Survey.q3)
-async def p3(m: types.Message, s: FSMContext): await s.update_data(q3=m.text); await ask_question(m, s, "q4")
+async def p3(message: types.Message, state: FSMContext):
+    await state.update_data(q3=message.text)
+    await ask_question(message, state, "q4")
+
+
 @dp.message(Survey.q4)
-async def p4(m: types.Message, s: FSMContext): await s.update_data(q4=m.text); await ask_question(m, s, "q5")
+async def p4(message: types.Message, state: FSMContext):
+    await state.update_data(q4=message.text)
+    await ask_question(message, state, "q5")
+
+
 @dp.message(Survey.q5)
-async def p5(m: types.Message, s: FSMContext): await s.update_data(q5=m.text); await ask_question(m, s, "q6")
+async def p5(message: types.Message, state: FSMContext):
+    await state.update_data(q5=message.text)
+    await ask_question(message, state, "q6")
+
+
 @dp.message(Survey.q6)
-async def p6(m: types.Message, s: FSMContext): await s.update_data(q6=m.text); await ask_question(m, s, "q7")
+async def p6(message: types.Message, state: FSMContext):
+    await state.update_data(q6=message.text)
+    await ask_question(message, state, "q7")
+
+
 @dp.message(Survey.q7)
-async def p7(m: types.Message, s: FSMContext): await s.update_data(q7=m.text); await ask_question(m, s, "q8")
+async def p7(message: types.Message, state: FSMContext):
+    await state.update_data(q7=message.text)
+    await ask_question(message, state, "q8")
 
 @dp.message(Survey.q8)
 async def p8(message: types.Message, state: FSMContext):
