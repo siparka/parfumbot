@@ -176,7 +176,7 @@ async def process_phone(message: types.Message, state: FSMContext):
     await state.clear()
 
 
-@dp.message(F.contact)
+@dp.message(Survey.phone, F.contact)
 async def process_contact(message: types.Message, state: FSMContext):
     phone = message.contact.phone_number
 
