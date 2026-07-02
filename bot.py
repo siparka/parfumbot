@@ -8,10 +8,19 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemo
 import sys
 import os
 
-# ========== НАСТРОЙКИ ==========
+print("BOT_TOKEN =", os.getenv("BOT_TOKEN"))
+print("ADMIN_ID =", os.getenv("ADMIN_ID"))
+
 TOKEN = os.getenv("BOT_TOKEN")
-ADMIN_ID = int(os.getenv("ADMIN_ID"))
-# ================================
+ADMIN = os.getenv("ADMIN_ID")
+
+if not TOKEN:
+    raise ValueError("BOT_TOKEN не найден")
+
+if not ADMIN:
+    raise ValueError("ADMIN_ID не найден")
+
+ADMIN_ID = int(ADMIN)
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 if not TOKEN:
