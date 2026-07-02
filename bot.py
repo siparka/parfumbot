@@ -147,20 +147,21 @@ async def p7(message: types.Message, state: FSMContext):
 async def p8(message: types.Message, state: FSMContext):
     await state.update_data(q8=message.text)
     await state.set_state(Survey.phone)
-    phone_keyboard = ReplyKeyboardMarkup(
-    keyboard=[
-        [KeyboardButton(text="📱 Поделиться номером", request_contact=True)]
-    ],
-    resize_keyboard=True,
-    one_time_keyboard=True
-)
 
-await message.answer(
-    "📱 Супер! Остался последний шаг.\n\n"
-    "Нажмите кнопку ниже, чтобы отправить номер телефона.\n\n"
-    "Или можете написать его вручную.",
-    reply_markup=phone_keyboard
-)
+    phone_keyboard = ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text="📱 Поделиться номером", request_contact=True)]
+        ],
+        resize_keyboard=True,
+        one_time_keyboard=True
+    )
+
+    await message.answer(
+        "📱 Супер! Остался последний шаг.\n\n"
+        "Нажмите кнопку ниже, чтобы отправить номер телефона.\n\n"
+        "Или можете написать его вручную.",
+        reply_markup=phone_keyboard
+    )
 
 @dp.message(Survey.phone)
 async def process_phone(message: types.Message, state: FSMContext):
