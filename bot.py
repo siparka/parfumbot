@@ -147,10 +147,20 @@ async def p7(message: types.Message, state: FSMContext):
 async def p8(message: types.Message, state: FSMContext):
     await state.update_data(q8=message.text)
     await state.set_state(Survey.phone)
-    await message.answer(
-        "📱 Супер! Остался последний шаг.\n\nОставьте свой номер телефона — Егор свяжется с вами в ближайшее время.\n\n📞 Ваш номер:",
-        reply_markup=ReplyKeyboardRemove()
-    )
+    phone_keyboard = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text="📱 Поделиться номером", request_contact=True)]
+    ],
+    resize_keyboard=True,
+    one_time_keyboard=True
+)
+
+await message.answer(
+    "📱 Супер! Остался последний шаг.\n\n"
+    "Нажмите кнопку ниже, чтобы отправить номер телефона.\n\n"
+    "Или можете написать его вручную.",
+    reply_markup=phone_keyboard
+)
 
 @dp.message(Survey.phone)
 async def process_phone(message: types.Message, state: FSMContext):
@@ -162,6 +172,37 @@ async def process_phone(message: types.Message, state: FSMContext):
               f"👤 {message.from_user.full_name} (@{message.from_user.username or 'нет'})")
     await bot.send_message(ADMIN_ID, report)
     await message.answer("✅ Спасибо! Егор свяжется с вами в ближайшее время. До встречи! 🚀")
+    await state.clear()
+
+
+@dp.message(F.contact)
+async def process_contact(message: types.Message, state: FSMContext):
+    phone = message.contact.phone_number
+
+    data = await state.get_data()
+
+    report = (
+        f"🔔 НОВЫЙ ЛИД!\n\n"
+        f"📞 Телефон: {phone}\n\n"
+        f"1️⃣ {data.get('q1')}\n"
+        f"2️⃣ {data.get('q2')}\n"
+        f"3️⃣ {data.get('q3')}\n"
+        f"4️⃣ {data.get('q4')}\n"
+        f"5️⃣ {data.get('q5')}\n"
+        f"6️⃣ {data.get('q6')}\n"
+        f"7️⃣ {data.get('q7')}\n"
+        f"8️⃣ {data.get('q8')}\n\n"
+        f"👤 {message.from_user.full_name} "
+        f"(@{message.from_user.username or 'нет'})"
+    )
+
+    await bot.send_message(ADMIN_ID, report)
+
+    await message.answer(
+        "✅ Спасибо! Егор свяжется с вами в ближайшее время.",
+        reply_markup=ReplyKeyboardRemove()
+    )
+
     await state.clear()
 
 async def main():
