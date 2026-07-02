@@ -164,24 +164,14 @@ async def p8(message: types.Message, state: FSMContext):
         reply_markup=phone_keyboard
     )
 
-@dp.message(Survey.phone, F.text)
+@dp.message(Survey.phone)
 async def process_phone(message: types.Message, state: FSMContext):
     data = await state.get_data()
-    report = (f"🔔 НОВЫЙ ЛИД!\n\n📞 Телефон: {message.text}\n\n"
-              f"1️⃣ {data.get('q1')}\n2️⃣ {data.get('q2')}\n3️⃣ {data.get('q3')}\n"
-              f"4️⃣ {data.get('q4')}\n5️⃣ {data.get('q5')}\n6️⃣ {data.get('q6')}\n"
-              f"7️⃣ {data.get('q7')}\n8️⃣ {data.get('q8')}\n\n"
-              f"👤 {message.from_user.full_name} (@{message.from_user.username or 'нет'})")
-    await bot.send_message(GROUP_ID, report)
-    await message.answer("✅ Спасибо! Егор свяжется с вами в ближайшее время. До встречи! 🚀")
-    await state.clear()
 
-
-@dp.message(Survey.phone, F.contact)
-async def process_contact(message: types.Message, state: FSMContext):
-    phone = message.contact.phone_number
-
-    data = await state.get_data()
+    if message.contact:
+        phone = message.contact.phone_number
+    else:
+        phone = message.text
 
     report = (
         f"🔔 НОВЫЙ ЛИД!\n\n"
@@ -194,8 +184,9 @@ async def process_contact(message: types.Message, state: FSMContext):
         f"6️⃣ {data.get('q6')}\n"
         f"7️⃣ {data.get('q7')}\n"
         f"8️⃣ {data.get('q8')}\n\n"
-        f"👤 {message.from_user.full_name} "
-        f"(@{message.from_user.username or 'нет'})"
+        f"👤 {message.from_user.full_name}\n"
+        f"@{message.from_user.username or 'нет'}\n"
+        f"🆔 {message.from_user.id}"
     )
 
     await bot.send_message(GROUP_ID, report)
