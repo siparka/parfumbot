@@ -21,6 +21,7 @@ if not ADMIN:
     raise ValueError("ADMIN_ID не найден")
 
 ADMIN_ID = int(ADMIN)
+GROUP_ID = -1003972356631
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 if not TOKEN:
@@ -171,12 +172,12 @@ async def process_phone(message: types.Message, state: FSMContext):
               f"4️⃣ {data.get('q4')}\n5️⃣ {data.get('q5')}\n6️⃣ {data.get('q6')}\n"
               f"7️⃣ {data.get('q7')}\n8️⃣ {data.get('q8')}\n\n"
               f"👤 {message.from_user.full_name} (@{message.from_user.username or 'нет'})")
-    await bot.send_message(ADMIN_ID, report)
+    await bot.send_message(GROUP_ID, report)
     await message.answer("✅ Спасибо! Егор свяжется с вами в ближайшее время. До встречи! 🚀")
     await state.clear()
 
 
-@dp.message(F.contact)
+@dp.message(Survey.phone, F.contact)
 async def process_contact(message: types.Message, state: FSMContext):
     phone = message.contact.phone_number
 
@@ -197,7 +198,7 @@ async def process_contact(message: types.Message, state: FSMContext):
         f"(@{message.from_user.username or 'нет'})"
     )
 
-    await bot.send_message(ADMIN_ID, report)
+    await bot.send_message(GROUP_ID, report)
 
     await message.answer(
         "✅ Спасибо! Егор свяжется с вами в ближайшее время.",
